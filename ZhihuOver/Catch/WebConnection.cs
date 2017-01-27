@@ -34,13 +34,14 @@ namespace ZhihuOver
         }
 
         /// <summary>
-        /// 通过GET方式发送数据
+        /// 访问网址，获取数据
         /// </summary>
         /// <param name="Url">url</param>
-        /// <param name="postDataStr">GET数据</param>
-        /// <param name="cookie">GET容器</param>
+        /// <param name="cookieStr">cookie</param>
+        /// <param name="charset">解码时的编码</param>
+        /// <param name="postparam">post参数，置空则使用get</param>
         /// <returns></returns>
-        public static string getDataWithCookie(string url, string cookieStr,Encoding charset)
+        public static string getDataWithCookie(string url, string cookieStr, Encoding charset, string postparam = null)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             //if (cookie.Count == 0)
@@ -52,10 +53,24 @@ namespace ZhihuOver
             //{
             //    request.CookieContainer = cookie;
             //}
+            if (!string.IsNullOrWhiteSpace(postparam))
+            {
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded;charset=UTF-8";
+                byte[] byteArray = Encoding.UTF8.GetBytes("json=" + postparam);
+                using (Stream newStream = request.GetRequestStream())
+                {
+                    newStream.Write(byteArray, 0, byteArray.Length);
+                }
+            }
+            else
+            {
+                request.Method = "GET";
+                request.ContentType = "text/html;charset=UTF-8";
+            }
 
-            request.Method = "GET";
-            request.ContentType = "text/html;charset=UTF-8";
             request.Headers.Add("Cookie", cookieStr);
+
             //request.ContentType = "image/JPEG;";
             try
             {

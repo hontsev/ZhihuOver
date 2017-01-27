@@ -58,10 +58,10 @@ E:\CProjects\ZhihuOver\ZhihuOver\bin\Debug\NUniversalCharDet.pdb
 E:\CProjects\ZhihuOver\ZhihuOver\bin\Debug\OfficeApi.xml
 E:\CProjects\ZhihuOver\ZhihuOver\bin\Debug\VBIDEApi.xml
 E:\CProjects\ZhihuOver\ZhihuOver\bin\Debug\WordApi.xml
-E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.csprojResolveAssemblyReference.cache
 E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.csproj.ResolveComReference.cache
 E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.Properties.Resources.resources
 E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.WSForm.resources
 E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.csproj.GenerateResource.Cache
 E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.exe
 E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.pdb
+E:\CProjects\ZhihuOver\ZhihuOver\obj\Debug\ZhihuOver.csprojResolveAssemblyReference.cache

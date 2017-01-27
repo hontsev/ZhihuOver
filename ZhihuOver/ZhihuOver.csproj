@@ -101,16 +101,11 @@
   <ItemGroup>
     <Compile Include="Analysis\AnalysisController.cs" />
     <Compile Include="Analysis\ImageAnalysis.cs" />
-    <Compile Include="Analysis\RegexGroup.cs" />
-    <Compile Include="Analysis\RegexItem.cs" />
     <Compile Include="Analysis\TextAnalysis.cs" />
     <Compile Include="Catch\EncodingState.cs" />
     <Compile Include="Catch\CatchController.cs" />
-    <Compile Include="Catch\AddState.cs" />
-    <Compile Include="Catch\NumberGetter.cs" />
     <Compile Include="Catch\DataBaseConnection.cs" />
     <Compile Include="Output\JsonController.cs" />
-    <Compile Include="MultiThreadingController.cs" />
     <Compile Include="MyDelegate.cs" />
     <Compile Include="Output\OutputController.cs" />
     <Compile Include="Output\OutputType.cs" />
@@ -124,6 +119,7 @@
     <Compile Include="WSForm.Designer.cs">
       <DependentUpon>WSForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ZhihuItem.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -32,10 +32,12 @@ namespace ZhihuOver
         bool run = false;
 
         private List<Thread> td;
-        MyDelegate.sendStringDelegate printEvent;
-        MyDelegate.sendStringDelegate updateNoEvent;
-        MyDelegate.sendStringDelegate updateStateEvent;
 
+        bool multi = false;
+
+        private List<ZhihuItem> items;
+        private string thisid;
+        private getType thistype; 
 
         public WSForm()
         {
@@ -52,6 +54,9 @@ namespace ZhihuOver
         {
             loadConfig();
             updateUI();
+            comboBox1.SelectedIndex = 0;
+            comboBox1.SelectedIndex = 0;
+            items = new List<ZhihuItem>();
         }
 
         private void loadConfig()
@@ -119,21 +124,11 @@ namespace ZhihuOver
         /// </summary>
         private void updateUI()
         {
-            comboBox1.SelectedIndex = (int)cc.encoding;
-            comboBox2.SelectedIndex = (int)cc.addState;
-            //numericUpDown1.Value = config.threadNum;
-            textBox2.Text = cc.url1;
-            textBox3.Text = cc.url2;
-            textBox7.Text = cc.url3;
-            checkBox4.Checked = ac.isWord;
-            checkBox5.Checked = ac.isImage;
-            checkBox6.Checked = ac.isFile;
             checkBox1.Checked = oc.isSaveOneTxt;
-            checkBox2.Checked = oc.isNotSmallImage;
             textBox4.Text = oc.savePath;
             textBox8.Text = cc.cookies;
-            updateRegexItemView();
-
+            textBox3.Text = cc.nowNum;
+            comboBox3.SelectedIndex = (int)cc.type;
         }
 
         /// <summary>
@@ -141,20 +136,13 @@ namespace ZhihuOver
         /// </summary>
         private void updateConfig()
         {
-            cc.encoding = (EncodingState)comboBox1.SelectedIndex;
-            cc.addState = (AddState)comboBox2.SelectedIndex;
-            //.threadNum = Convert.ToInt32(numericUpDown1.Value);
-            cc.url1 = textBox2.Text;
-            cc.url2 = textBox3.Text;
-            cc.url3 = textBox7.Text;
-            ac.isWord = checkBox4.Checked;
-            ac.isImage = checkBox5.Checked;
-            ac.isFile = checkBox6.Checked;
             oc.isSaveOneTxt = checkBox1.Checked;
-            oc.isNotSmallImage = checkBox2.Checked;
             oc.savePath = textBox4.Text;
             cc.cookies = textBox8.Text;
-            saveRegexGroup();
+            cc.nowNum = textBox3.Text;
+            cc.type = (getType)comboBox3.SelectedIndex;
+            ac.keys = textBox2.Text;
+            multi = (comboBox1.SelectedIndex == 1 ? true : false);
         }
 
 
@@ -168,7 +156,7 @@ namespace ZhihuOver
         {
             if (textBox6.InvokeRequired)
             {
-                printEvent = new MyDelegate.sendStringDelegate(print);
+                MyDelegate.sendStringDelegate printEvent = new MyDelegate.sendStringDelegate(print);
                 Invoke(printEvent, (object)str);
             }
             else
@@ -179,11 +167,58 @@ namespace ZhihuOver
             
         }
 
+        public void printInfo1(string str)
+        {
+            if (textBox7.InvokeRequired)
+            {
+                MyDelegate.sendStringDelegate printEvent = new MyDelegate.sendStringDelegate(printInfo1);
+                Invoke(printEvent, (object)str);
+            }
+            else
+            {
+                textBox7.Text=str;
+            }
+        }
+
+
+        public void printInfo2(string str)
+        {
+            if (textBox5.InvokeRequired)
+            {
+                MyDelegate.sendStringDelegate printEvent = new MyDelegate.sendStringDelegate(printInfo2);
+                Invoke(printEvent, (object)str);
+            }
+            else
+            {
+                textBox5.Text = str;
+            }
+        }
+
+        public void updateList()
+        {
+            if (listView1.InvokeRequired)
+            {
+                MyDelegate.sendVoidDelegate mEvent = new MyDelegate.sendVoidDelegate(updateList);
+                Invoke(mEvent);
+            }
+            else
+            {
+                listView1.Items.Clear();
+                foreach (var item in items)
+                {
+                    ListViewItem i = new ListViewItem(item.id);
+                    i.SubItems.Add(item.content);
+                    listView1.Items.Add(i);
+                }
+                listView1.Refresh();
+            }
+        }
+
         private void updateState(string str)
         {
             if (label6.InvokeRequired)
             {
-                updateStateEvent = new MyDelegate.sendStringDelegate(updateState);
+                MyDelegate.sendStringDelegate updateStateEvent = new MyDelegate.sendStringDelegate(updateState);
                 Invoke(updateStateEvent, (object)str);
             }
             else
@@ -200,7 +235,7 @@ namespace ZhihuOver
         {
             if (textBox1.InvokeRequired)
             {
-                updateNoEvent = new MyDelegate.sendStringDelegate(updateNo);
+                MyDelegate.sendStringDelegate updateNoEvent = new MyDelegate.sendStringDelegate(updateNo);
                 Invoke(updateNoEvent, (object)str);
             }
             else
@@ -236,7 +271,7 @@ namespace ZhihuOver
             {
                 if (!run)
                 {
-                    cc.nowNum = 0;
+                    cc.nowNum = "0";
                     //开始
                     updateConfig();
                     //this.domainName = config.url1.Split('/')[2];
@@ -259,7 +294,7 @@ namespace ZhihuOver
             {
                 if (!run)
                 {
-                    cc.nowNum = 0;
+                    cc.nowNum = "0";
                     updateConfig();
                     run = false;
                     //print("program begin. ");
@@ -310,54 +345,86 @@ namespace ZhihuOver
         private void testwork()
         {
             string html = cc.catchHtml();
-            ac.analysis(cc.getNowUrl(), html, cc.url1);
+            ac.analysis(cc.getNowUrl(), html, cc.type);
             print("分析结果：");
             print(ac.title);
             foreach (var a in ac.content)
             {
                 string outputstr = "";
-                foreach(var v in a.Value)outputstr+=v+"\r\n";
+                outputstr += a.Value + "\r\n";
                 print(string.Format("【【【{0}】】】:\r\n\r\n\r\n\r\n{1}\r\n\r\n\r\n\r\n", a.Key, outputstr));
             }
             if (ac.strList.Count > 0) print(ac.strList[0].ToString());
         }
 
-        private void dealAnalysisResult(Dictionary<string,List<string>> res)
+        
+
+        private void dealAnalysisResult(Dictionary<string, string> res,bool multi)
         {
-            foreach (var item in res)
+            string nowid = "";
+            string nowcontent = "";
+            nowid = cc.nowNum;
+            res.TryGetValue("content", out nowcontent);
+            printInfo1(string.Format("type:{0}\r\nid:{1}\r\n{2}", cc.type.ToString(), nowid, nowcontent));
+            if (multi)
             {
-                if (item.Key.ToLower() == "title" && item.Value != null && !string.IsNullOrWhiteSpace(item.Value.First()))
+                //下载整个列表
+
+                if (!string.IsNullOrWhiteSpace(nowid)) cc.nowNum = nowid;
+                cc.offset = 0;
+                if (cc.type == getType.topic) cc.type = getType.question_list;
+                else if (cc.type == getType.question) cc.type = getType.answer;
+                else if (cc.type == getType.answer) cc.type = getType.comment;
+                else if (cc.type == getType.article) cc.type = getType.comment_article;
+                this.items = new List<ZhihuItem>();
+                for (int i = 0; i < 100; i++)
                 {
-                    ac.title = item.Value.First();
-                }
-                else if (!item.Key.StartsWith("!") && item.Key != "all")
-                {
-                    //惊叹号开头的那些不进行输出
-                    if (item.Key.ToLower().StartsWith("img"))
+                    ac.analysis(cc.getNowUrl(), cc.catchHtml(), cc.type);
+                    cc.gotoNext(true);
+                    string id = "";
+                    string content = "";
+                    ac.content.TryGetValue("id", out id);
+                    ac.content.TryGetValue("content", out content);
+                    if (string.IsNullOrWhiteSpace(id))
                     {
-                        //以img开头，视为图片来下载
-                        if (item.Value != null)
+                        if (cc.type == getType.question_list && i == 0) continue;
+                        else break;
+                    }
+                    print(string.Format("({0})[{1}]:[{2}]", cc.type.ToString(), id, content));
+                    if (cc.type == getType.question_list)
+                    {
+                        string[] ids = id.Split(',');
+                        string[] contents = content.Split('|');
+                        for (int j = 0; j < ids.Length; j++)
                         {
-                            foreach(var imgstr in item.Value)
-                                if(!string.IsNullOrWhiteSpace(imgstr))ac.strList.Add(imgstr);
+                            this.items.Add(new ZhihuItem(ids[j], contents[j], cc.type));
                         }
                     }
                     else
                     {
-                        //储存为txt。
-                        string savestr="";
-                        //以下划线开头的，不打印其key名
-                        if(!item.Key.ToLower().StartsWith("_"))
-                             savestr+=string.Format("{0}:\r\n",item.Key);
-                        foreach (var s in item.Value)
-                        {
-                            savestr += string.Format("{0}\r\n", s);
-                        }
-                        //savestr += "\r\n";
-                        oc.output(ac.title, savestr);
+                        this.items.Add(new ZhihuItem(id, content, cc.type));
                     }
+                    
+                    updateList();
                 }
             }
+            else
+            {
+                //单个
+            }
+
+            ////储存为txt。
+            //string savestr = "";
+            ////以下划线开头的，不打印其key名
+            //if (!item.Key.ToLower().StartsWith("_"))
+            //    savestr += string.Format("{0}:\r\n", item.Key);
+            //foreach (var s in item.Value)
+            //{
+            //    savestr += string.Format("{0}\r\n", s);
+            //}
+            ////savestr += "\r\n";
+            //oc.output(ac.title, savestr);
+
         }
 
         /// <summary>
@@ -368,25 +435,29 @@ namespace ZhihuOver
             do
             {
                 updateNo(cc.nowNum.ToString());
-                string html = cc.catchHtml();
-                ac.analysis(cc.getNowUrl(), html, cc.url1);
-
+                ac.analysis(cc.getNowUrl(), cc.catchHtml(), cc.type);
                 //处理正则匹配结果
-                dealAnalysisResult(ac.content);
+                dealAnalysisResult(ac.content,multi);
+                cc.gotoNext();
                 //if (ac.content.Count > 1 && !string.IsNullOrWhiteSpace(ac.content.ElementAt(1).Value)) oc.output(ac.title, oc.formatOutputText(ac.content), OutputType.txt);
                 
                 //处理图片链接
-                if (ac.strList.Count > 0) print(ac.strList[0].ToString());
-                cc.saveImg(ac.strList, oc.savePath, ac.title + "_" + cc.nowNum.ToString());
-
-                if (cc.nowNum == cc.maxNum)
-                {
-                    run = false;
-                }
+                //if (ac.strList.Count > 0) print(ac.strList[0].ToString());
+                //cc.saveImg(ac.strList, oc.savePath, ac.title + "_" + cc.nowNum.ToString());
             } while (run);
             if (threadNum != null) print("thread " + threadNum.ToString() + " end.");
         }
 
+        private void workGetInfo()
+        {
+            getType type = getType.question;
+            if (thistype== getType.topic) type = getType.question_list;
+            else if (thistype == getType.question) type = getType.answer;
+            else if (thistype == getType.answer) type = getType.comment;
+            else if (thistype == getType.article) type = getType.comment_article;
+            ac.analysis(cc.getNowUrl(type, thisid), cc.catchHtml(type, thisid, 0), type);
+            dealAnalysisResult(ac.content, false);
+        }
 
         private void workLoop()
         {
@@ -465,12 +536,7 @@ namespace ZhihuOver
         }
 
         string html;
-        private void button7_Click(object sender, EventArgs e)
-        {
-            html = textBox5.Text;
-            new Thread(workLoop).Start();
 
-        }
 
         private void WSForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -484,58 +550,14 @@ namespace ZhihuOver
             updateUI();
         }
 
-        private void button15_Click(object sender, EventArgs e)
-        {
-            string str = @"E:\北航\网络存储\新建文件夹";
-            string[] res = Directory.GetDirectories(str, "提交作业的附件", SearchOption.AllDirectories);
-            foreach (var a in res)
-            {
-                if (Directory.GetFiles(a).Length <= 0) Directory.Delete(a);
-
-                //string uppath = a.Replace(@"提交作业的附件", "");
-                //string[] files = Directory.GetFiles(a);
-                //foreach (var f in files)
-                //{
-                //    print(f);
-                //    //print(uppath + Path.GetFileName(f));
-                //    File.Move(f, uppath + Path.GetFileName(f));
-                //}
-            }
-        }
 
         private void textBox8_TextChanged(object sender, EventArgs e)
         {
             cc.cookies = textBox8.Text;
         }
 
-        private void updateRegexItemView()
-        {
-            dataGridView1.Rows.Clear();
-            foreach (var r in ac.nowRegexGroup.regex)
-            {
-                int index = dataGridView1.Rows.Add();
-                this.dataGridView1.Rows[index].Cells[0].Value = r.sourcename;
-                this.dataGridView1.Rows[index].Cells[1].Value = r.regex;
-                this.dataGridView1.Rows[index].Cells[2].Value = r.name;
-            }
-        }
 
-        private void saveRegexGroup()
-        {
-            ac.nowRegexGroup.regex.Clear();
-            for (int i = 0; i < dataGridView1.Rows.Count; i++)
-            {
-                RegexItem ri = new RegexItem();
-                if (dataGridView1.Rows[i].Cells[0].Value==null||dataGridView1.Rows[i].Cells[1].Value==null||dataGridView1.Rows[i].Cells[2].Value==null) continue;
-                ri.sourcename = dataGridView1.Rows[i].Cells[0].Value.ToString();
-                ri.regex = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                ri.name = dataGridView1.Rows[i].Cells[2].Value.ToString();
-                ac.nowRegexGroup.regex.Add(ri);
-            }
-            ac.nowRegexGroup.target = cc.url1;
-            ac.regexGroup.Remove(ac.regexGroup.Find(item => item.target == ac.nowRegexGroup.target));
-            ac.regexGroup.Add(ac.nowRegexGroup);
-        }
+
 
         private void textBox6_MouseUp(object sender, MouseEventArgs e)
         {
@@ -598,6 +620,14 @@ namespace ZhihuOver
         private void button4_Click(object sender, EventArgs e)
         {
             new Thread(workClearMultiImages).Start();
+        }
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedIndices.Count <= 0) return;
+            thisid = listView1.SelectedItems[0].Text;
+            thistype = cc.type;
+            new Thread(workGetInfo).Start();
         }
        
     }

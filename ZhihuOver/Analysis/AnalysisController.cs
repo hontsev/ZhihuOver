@@ -14,11 +14,10 @@ namespace ZhihuOver.Analysis
         public bool isFile;
 
         public string title;
-        public Dictionary<string,List<string>> content;
+        public Dictionary<string,string> content;
         public List<string> strList;
+        public string keys;
 
-        public List<RegexGroup> regexGroup;
-        public RegexGroup nowRegexGroup;
 
         public AnalysisController()
         {
@@ -26,10 +25,9 @@ namespace ZhihuOver.Analysis
             isImage = false;
             isFile = false;
             title = "";
-            content = new Dictionary<string, List<string>>();
+            content = new Dictionary<string,string>();
             strList = new List<string>();
-            regexGroup = new List<RegexGroup>();
-            nowRegexGroup = new RegexGroup();
+            keys = "";
         }
 
         /// <summary>
@@ -60,14 +58,34 @@ namespace ZhihuOver.Analysis
             return name;
         }
 
-        public void analysis(string url , string html,string url1)
+        public void analysis(string url , string html,getType type)
         {
             string sitename = getWebsiteName(url);
+
+
             if (isWord)
             {
-                title = TextAnalysis.getTitle(sitename, html);
-                content = TextAnalysis.contentFormat(url1, html, regexGroup);
+                //title = TextAnalysis.getTitle(sitename, html);
+                content = TextAnalysis.contentFormat(url, html, type);
+                string[] key = keys.Split(' ');
+                bool suit=true;
+                foreach (var k in key)
+                {
+                    if (!content.ContainsKey("content")) break;
+                    if (string.IsNullOrWhiteSpace(k)) continue;
+                    if (!content["content"].Contains(k))
+                    {
+                        suit = false;
+                        break;
+                    }
+                }
+                if (!suit)
+                {
+                    content["content"] = "";
+                }
             }
+
+
             if (isImage)
             {
                 strList = ImageAnalysis.getImage(sitename, html);

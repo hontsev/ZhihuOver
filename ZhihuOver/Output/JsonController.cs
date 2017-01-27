@@ -73,11 +73,9 @@ namespace ZhihuOver.Output
                 object info = serializer.Deserialize(new JsonTextReader(sr), typeof(CatchController));
                 CatchController info1= info as CatchController;
                 cc.cookies = info1.cookies;
-                cc.addState = info1.addState;
-                cc.url1 = info1.url1;
-                cc.url2 = info1.url2;
-                cc.url3 = info1.url3;
+                cc.type = info1.type;
                 cc.encoding = info1.encoding;
+                cc.nowNum = info1.nowNum;
             }
         }
 
@@ -154,8 +152,6 @@ namespace ZhihuOver.Output
                 ac.isWord = info1.isWord;
                 ac.isImage = info1.isImage;
                 ac.isFile = info1.isFile;
-                ac.regexGroup = info1.regexGroup;
-                ac.nowRegexGroup = info1.nowRegexGroup;
             }
         }
 

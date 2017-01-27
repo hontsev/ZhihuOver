@@ -13,31 +13,24 @@ namespace ZhihuOver.Catch
 {
     class CatchController
     {
-        public int maxNum;
-        public int nowNum;
-        public string nowStr;
-        public AddState addState;
+        public string nowNum;
+        //public string nowStr;
         public EncodingState encoding;
 
-        public string url1;
-        public string url2;
-        public string url3;
+        public getType type;
+        public int offset;
 
-        //public bool useCookies;
         public string cookies;
 
 
         public CatchController()
         {
             //addState = AddState.num_staticLength;
-            url1 = "";
-            url2 = "";
-            url3 = "";
+            type = getType.question;
             cookies = "";
-            nowNum = 0;
-            maxNum = -1;
-            nowStr = "";
+            nowNum = "0";
             encoding = EncodingState.utf8;
+            offset = 0;
         }
 
         private Encoding getEncoding()
@@ -47,82 +40,111 @@ namespace ZhihuOver.Catch
             else return Encoding.Default;
         }
 
-        public string getNowUrl()
+        public string getNowUrl(getType ttype = getType.question, string tnowNum = "", int toffset = 0)
         {
-            string url = url1 + nowStr + url3;
+            getType mtype = type;
+            string mnowNum = nowNum;
+            int moffset = offset;
+            if (!string.IsNullOrWhiteSpace(tnowNum))
+            {
+                mtype = ttype;
+                mnowNum = tnowNum;
+                moffset = toffset;
+            }
+            string url = "";
+            switch (mtype)
+            {
+                case getType.answer:
+                    url = string.Format("http://www.zhihu.com/api/v4/questions/{0}/answers?include=data%5B*%5D.content&offset={1}&limit=1", mnowNum, moffset);
+                    break;
+                case getType.article:
+                    url = string.Format("http://zhuanlan.zhihu.com/api/posts/{0}", mnowNum);
+                    break;
+                case getType.comment:
+                    url = string.Format("http://www.zhihu.com/api/v4/answers/{0}/comments?include=data%5B%2A%5D.content&limit=1&offset={1}", mnowNum, moffset);
+                    break;
+                case getType.question:
+                    url = string.Format("http://www.zhihu.com/question/{0}", mnowNum);
+                    break;
+                case getType.topic:
+                    url = string.Format("http://www.zhihu.com/topic/{0}/organize", mnowNum);
+                    break;
+                case getType.user:
+                    url = string.Format("http://www.zhihu.com/people/{0}/answers", mnowNum);
+                    break;
+                case getType.comment_article:
+                    url = string.Format("http://zhuanlan.zhihu.com/api/posts/{0}/comments?limit=1&offset={1}", mnowNum, moffset);
+                    break;
+                case getType.question_list:
+                    url = string.Format("https://www.zhihu.com/topic/{0}/unanswered?page={1}", mnowNum, moffset);
+                    break;
+                default: break;
+            }
             return url;
         }
 
-        /// <summary>
-        /// 获取下一个要扫描的号码
-        /// </summary>
-        /// <returns></returns>
-        private void getNext()
+        ///// <summary>
+        ///// 获取下一个要扫描的号码
+        ///// </summary>
+        ///// <returns></returns>
+        //private void getNext()
+        //{
+
+        //    if (nowNum == 0)
+        //    {
+        //        //init
+        //        nowStr = nowNum.ToString();
+        //    }
+        //    else
+        //    {
+        //        string beforeStr = nowStr;
+        //        WordsIncrement incStr = new WordsIncrement();
+
+        //        nowStr = incStr.getNext(beforeStr);
+
+        //    }
+        //}
+
+        ///// <summary>
+        ///// 获取下一个要扫描的号码
+        ///// </summary>
+        ///// <returns></returns>
+        //private void getNextOffset()
+        //{
+        //    if (offset == 0)
+        //    {
+        //        //init
+        //        nowStr = nowNum.ToString();
+        //    }
+        //    else
+        //    {
+        //        string beforeStr = nowStr;
+        //        WordsIncrement incStr = new WordsIncrement();
+
+        //        nowStr = incStr.getNext(beforeStr);
+
+        //    }
+        //}
+
+        public void gotoNext(bool isoffset = false)
         {
-            if (nowNum == 0)
-            {
-                //init
-                nowStr = url2;
-            }
-            else
-            {
-                string beforeStr = nowStr;
-                WordsIncrement incStr = new WordsIncrement();
-                switch (addState)
-                {
-                    case AddState.num_buaaSid:
-                        nowStr= NumberGetter.nextId(beforeStr);
-                        break;
-                    case AddState.num_staticLength:
-                        //添0的自增
-                        nowStr = NumberGetter.add0(incStr.getNext(beforeStr), beforeStr.Length);
-                        break;
-                    case AddState.num_dynamicLength:
-                        //纯数字自增
-                        nowStr = incStr.getNext(beforeStr);
-                        break;
-                    case AddState.num_underline:
-                        //中间带有下划线，后一部分1-30自增，前一部分纯数字自增
-                        string[] tmp = beforeStr.Split('_');
-                        int num1, num2;
-                        Int32.TryParse(tmp[0], out num1);
-                        Int32.TryParse(tmp[1], out num2);
-                        num2++;
-                        if (num2 > 30)
-                        {
-                            num1++;
-                            num2 = 1;
-                        }
-                        nowStr = num1 + "_" + num2;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            if (isoffset) offset++;
+            else nowNum = new WordsIncrement().getNext(nowNum.ToString());
         }
 
 
-        public string catchHtml()
+        public string catchHtml(string post=null)
         {
-            getNext();
-            if (nowNum != maxNum)
-            {
-                string html = "";
-                if (string.IsNullOrEmpty(this.cookies))
-                {
-                    html = WebConnection.getData(getNowUrl(),getEncoding());
-                }
-                else
-                {
-                    html = WebConnection.getDataWithCookie(getNowUrl(), cookies, getEncoding());
-                }
-                nowNum += 1;
-                return html;
-            }
-            else
-            {
-                return "";
-            }
+            string html = "";
+            html = WebConnection.getDataWithCookie(getNowUrl(), cookies, getEncoding(), post);
+
+            //nowNum += 1;
+            return html;
+        }
+
+        public string catchHtml(getType ttype, string tnowNum, int toffset,string post = null)
+        {
+            return WebConnection.getDataWithCookie(getNowUrl(ttype, tnowNum, toffset), cookies, getEncoding(), post);
         }
 
         public void saveFile(string name, string path)
@@ -229,7 +251,7 @@ namespace ZhihuOver.Catch
                 string name = string.Format("{0}/{1}_{2}{3}", 
                     dirPath ,
                     imgTitle,
-                    NumberGetter.add0(i.ToString(),imgPath.Count.ToString().Length),
+                    i.ToString().PadLeft(imgPath.Count.ToString().Length,'0'),
                     getImagePathExt(path)
                     );
                 Directory.CreateDirectory(dirPath);
