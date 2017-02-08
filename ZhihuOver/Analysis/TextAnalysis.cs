@@ -57,16 +57,36 @@ namespace ZhihuOver.Analysis
                          source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
         }
 
+        private static string replaceHtmlTags(string str)
+        {
+            string[] removes = new string[] { "<p>", "<b>", "</b>", "<\\/b>", "<li>", "</li>", "<\\/li>", "<ul>", "</ul>", "<\\/ul>" };
+            string[] replaces = new string[] { "<br>", "</p>", "<\\/p>" };
+            foreach (var sym in removes)
+            {
+                str = str.Replace(sym, "");
+            }
+            foreach (var sym in replaces)
+            {
+                str = str.Replace(sym, "\r\n");
+            }
+            return str;
+        }
 
         public static Dictionary<string,string> contentFormat(string url, string html,getType type)
         {
             Dictionary<string,string> res = new Dictionary<string, string>();
             //html = formatHtml(html);
-            html = Unicode2String(HttpUtility.HtmlDecode(html).Replace("<br>", "\r\n").Replace("<\\/p>", "\r\n").Replace("<b>", "").Replace("<p>", "").Replace("<\\/b>", ""));
+            html = Unicode2String(replaceHtmlTags(HttpUtility.HtmlDecode(html)));
             res.Add("all",  html );
             Regex reg1, reg2, reg3, reg4;
             switch (type)
             {
+                case getType.topic:
+                    reg1 = new Regex("<title>话题组织 - ([^ ].*?) - 知乎</title>", RegexOptions.Singleline);
+                    res.Add("content", reg1.Match(html).Groups[1].Value);
+                    reg1 = new Regex("data-editable-maxlength=\"130\" >(.*?)</div>", RegexOptions.Singleline);
+                    res.Add("title", reg1.Match(html).Groups[1].Value);
+                    break;
                 case getType.question:
                     reg1 = new Regex("editableDetail\":\"(.*?)\",\"collapsed", RegexOptions.Singleline);
                     res.Add("content", reg1.Match(html).Groups[1].Value);
@@ -78,18 +98,26 @@ namespace ZhihuOver.Analysis
                 case getType.answer:
                     reg1 = new Regex("content\": \"(.*?)\", \"created_time", RegexOptions.Singleline);
                     res.Add("content", reg1.Match(html).Groups[1].Value);
+                    reg1 = new Regex("url_token\": \"([^\"].*?)\"", RegexOptions.Singleline);
+                    res.Add("author", reg1.Match(html).Groups[1].Value);
                     reg1=new Regex("answer\", \"id\": ([\\d]*)}",RegexOptions.Singleline);
                     res.Add("id", reg1.Match(html).Groups[1].Value);
                     break;
                 case getType.comment:
                     reg1 = new Regex("content\": \"(.*?)\", \"featured", RegexOptions.Singleline);
                     res.Add("content", reg1.Match(html).Groups[1].Value);
+                    reg1 = new Regex("url_token\": \"([^\"].*?)\"", RegexOptions.Singleline);
+                    res.Add("author", reg1.Match(html).Groups[1].Value);
                     reg1=new Regex("comment\", \"id\": ([\\d]*),",RegexOptions.Singleline);
                     res.Add("id", reg1.Match(html).Groups[1].Value);
                     break;
                 case getType.article:
                     reg1 = new Regex("content\": \"(.*?)\", \"state", RegexOptions.Singleline);
                     res.Add("content", reg1.Match(html).Groups[1].Value);
+                    reg1 = new Regex("slug\": \"([^\"]*?)\"", RegexOptions.Singleline);
+                    res.Add("author", reg1.Match(html).Groups[1].Value);
+                    reg1 = new Regex("\"title\": \"([^\"].*?)\"", RegexOptions.Singleline);
+                    res.Add("title", reg1.Match(html).Groups[1].Value);
                     break;
                 case getType.comment_article:
                     reg1 = new Regex("content\": \"(.*?)\", \"createdTime", RegexOptions.Singleline);
@@ -114,10 +142,6 @@ namespace ZhihuOver.Analysis
                     if (names.EndsWith("|")) names = names.Substring(0, names.Length - 1);
                     res.Add("id", ids);
                     res.Add("content", names);
-                    break;
-                case getType.topic:
-                    reg1 = new Regex("<title>话题组织 - ([^ ].*?) - 知乎</title>", RegexOptions.Singleline);
-                    res.Add("content", reg1.Match(html).Groups[1].Value);
                     break;
                 default:
                     break;

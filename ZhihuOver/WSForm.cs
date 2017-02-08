@@ -181,19 +181,6 @@ namespace ZhihuOver
         }
 
 
-        public void printInfo2(string str)
-        {
-            if (textBox5.InvokeRequired)
-            {
-                MyDelegate.sendStringDelegate printEvent = new MyDelegate.sendStringDelegate(printInfo2);
-                Invoke(printEvent, (object)str);
-            }
-            else
-            {
-                textBox5.Text = str;
-            }
-        }
-
         public void updateList()
         {
             if (listView1.InvokeRequired)
@@ -365,7 +352,7 @@ namespace ZhihuOver
             string nowcontent = "";
             nowid = cc.nowNum;
             res.TryGetValue("content", out nowcontent);
-            printInfo1(string.Format("type:{0}\r\nid:{1}\r\n{2}", cc.type.ToString(), nowid, nowcontent));
+            printInfo1(string.Format("type:{0}\r\nid:{1}\r\n{2}\r\nauthor:{3}\r\ntitle:{4}\r\n{5}", cc.type.ToString(), nowid, nowcontent));
             if (multi)
             {
                 //下载整个列表
@@ -382,8 +369,12 @@ namespace ZhihuOver
                     ac.analysis(cc.getNowUrl(), cc.catchHtml(), cc.type);
                     cc.gotoNext(true);
                     string id = "";
+                    string title = "";
+                    string author = "";
                     string content = "";
                     ac.content.TryGetValue("id", out id);
+                    ac.content.TryGetValue("title", out title);
+                    ac.content.TryGetValue("author", out author);
                     ac.content.TryGetValue("content", out content);
                     if (string.IsNullOrWhiteSpace(id))
                     {
@@ -397,12 +388,12 @@ namespace ZhihuOver
                         string[] contents = content.Split('|');
                         for (int j = 0; j < ids.Length; j++)
                         {
-                            this.items.Add(new ZhihuItem(ids[j], contents[j], cc.type));
+                            this.items.Add(new ZhihuItem(ids[j], title, author, contents[j], cc.type));
                         }
                     }
                     else
                     {
-                        this.items.Add(new ZhihuItem(id, content, cc.type));
+                        this.items.Add(new ZhihuItem(id, title, author, content, cc.type));
                     }
                     
                     updateList();
@@ -628,6 +619,74 @@ namespace ZhihuOver
             thisid = listView1.SelectedItems[0].Text;
             thistype = cc.type;
             new Thread(workGetInfo).Start();
+        }
+
+
+        private string tid;
+        private string qid;
+        private string aid;
+        private string wid;
+        private string keys;
+        private int searchtype;
+        private int reporttype;
+        private int allnum;
+        private int MAXALLNUM = 1000000;
+        private void workGetTargets()
+        {
+            print("开始检索待举报内容");
+            
+            CatchController cc = new CatchController();
+            cc.offset = 0;
+            switch (searchtype)
+            {
+                case 0:
+                    //question
+                    if (string.IsNullOrWhiteSpace(tid)) break;
+                    cc.type = getType.question_list;
+                    cc.nowNum = tid;
+                    cc.offset = 1;
+                    break;
+                case 1:
+                    //answer
+                    if (string.IsNullOrWhiteSpace(qid)) break;
+                    cc.type = getType.question_list;
+                    cc.nowNum = tid;
+                    break;
+                case 2:
+                    //comment
+                    if (string.IsNullOrWhiteSpace(tid)) break;
+                    cc.type = getType.question_list;
+                    cc.nowNum = tid;
+                    break;
+                case 3:
+                    //article
+                    if (string.IsNullOrWhiteSpace(tid)) break;
+                    cc.type = getType.article;
+                    cc.nowNum = tid;
+                    break;
+                default: break;
+            }
+
+            for (int i = 0; i < allnum; i++)
+            {
+
+            }
+
+            print("检索完毕 ");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            tid = textBox9.Text;
+            qid = textBox5.Text;
+            aid = textBox11.Text;
+            wid = textBox12.Text;
+            keys = textBox10.Text;
+            allnum = int.Parse(numericUpDown2.Value.ToString());
+            if (allnum < 0) allnum = MAXALLNUM;
+            searchtype = comboBox4.SelectedIndex;
+            reporttype = comboBox2.SelectedIndex;
+            new Thread(workGetTargets).Start();
         }
        
     }

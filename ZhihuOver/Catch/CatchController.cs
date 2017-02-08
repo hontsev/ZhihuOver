@@ -55,13 +55,13 @@ namespace ZhihuOver.Catch
             switch (mtype)
             {
                 case getType.answer:
-                    url = string.Format("http://www.zhihu.com/api/v4/questions/{0}/answers?include=data%5B*%5D.content&offset={1}&limit=1", mnowNum, moffset);
+                    url = string.Format("http://www.zhihu.com/api/v4/questions/{0}/answers?include=data%5B*%5D.author%2Ccontent&offset={1}&limit=1", mnowNum, moffset);
                     break;
                 case getType.article:
                     url = string.Format("http://zhuanlan.zhihu.com/api/posts/{0}", mnowNum);
                     break;
                 case getType.comment:
-                    url = string.Format("http://www.zhihu.com/api/v4/answers/{0}/comments?include=data%5B%2A%5D.content&limit=1&offset={1}", mnowNum, moffset);
+                    url = string.Format("http://www.zhihu.com/api/v4/answers/{0}/comments?include=data%5B%2A%5D.author%2Ccontent&limit=1&offset={1}", mnowNum, moffset);
                     break;
                 case getType.question:
                     url = string.Format("http://www.zhihu.com/question/{0}", mnowNum);

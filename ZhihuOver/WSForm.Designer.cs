@@ -44,7 +44,6 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -61,6 +60,26 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -76,6 +95,8 @@
             this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -89,12 +110,14 @@
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -119,6 +142,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -215,7 +239,6 @@
             // 
             this.tabPage2.Controls.Add(this.textBox7);
             this.tabPage2.Controls.Add(this.listView1);
-            this.tabPage2.Controls.Add(this.textBox5);
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -228,12 +251,12 @@
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(6, 176);
+            this.textBox7.Location = new System.Drawing.Point(280, 8);
             this.textBox7.Multiline = true;
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
             this.textBox7.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox7.Size = new System.Drawing.Size(255, 121);
+            this.textBox7.Size = new System.Drawing.Size(178, 109);
             this.textBox7.TabIndex = 55;
             // 
             // listView1
@@ -242,9 +265,9 @@
             this.columnHeader1,
             this.columnHeader2});
             this.listView1.FullRowSelect = true;
-            this.listView1.Location = new System.Drawing.Point(267, 170);
+            this.listView1.Location = new System.Drawing.Point(280, 123);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(386, 258);
+            this.listView1.Size = new System.Drawing.Size(178, 305);
             this.listView1.TabIndex = 54;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -253,22 +276,12 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "id";
-            this.columnHeader1.Width = 84;
+            this.columnHeader1.Width = 50;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "content";
-            this.columnHeader2.Width = 258;
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(6, 303);
-            this.textBox5.Multiline = true;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox5.Size = new System.Drawing.Size(255, 128);
-            this.textBox5.TabIndex = 53;
+            this.columnHeader2.Width = 102;
             // 
             // groupBox1
             // 
@@ -353,14 +366,14 @@
             // 
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
-            "话题",
-            "问题",
-            "答案",
-            "回复",
-            "文章",
-            "用户",
-            "文章回复",
-            "话题下的问题列表"});
+            "指定话题及其描述",
+            "指定问题及其描述",
+            "指定问题的全部答案",
+            "指定答案的全部回复",
+            "指定文章",
+            "指定用户",
+            "指定文章的全部回复",
+            "指定话题的全部问题"});
             this.comboBox3.Location = new System.Drawing.Point(58, 20);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(191, 20);
@@ -374,9 +387,9 @@
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Controls.Add(this.textBox4);
             this.groupBox3.Controls.Add(this.button2);
-            this.groupBox3.Location = new System.Drawing.Point(267, 15);
+            this.groupBox3.Location = new System.Drawing.Point(6, 176);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(375, 155);
+            this.groupBox3.Size = new System.Drawing.Size(255, 129);
             this.groupBox3.TabIndex = 43;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "存储地址";
@@ -384,7 +397,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(16, 77);
+            this.checkBox1.Location = new System.Drawing.Point(16, 105);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(162, 16);
             this.checkBox1.TabIndex = 19;
@@ -393,27 +406,27 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(16, 99);
+            this.button4.Location = new System.Drawing.Point(95, 76);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(223, 23);
+            this.button4.Size = new System.Drawing.Size(154, 23);
             this.button4.TabIndex = 42;
-            this.button4.Text = "去除存储路径里的重复图片";
+            this.button4.Text = "去除路径里重复文件";
             this.button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(16, 47);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(73, 23);
             this.button3.TabIndex = 18;
             this.button3.Text = "设为默认";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(97, 47);
+            this.button1.Location = new System.Drawing.Point(95, 47);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(124, 23);
+            this.button1.Size = new System.Drawing.Size(154, 23);
             this.button1.TabIndex = 13;
             this.button1.Text = "打开当前存储地址";
             this.button1.UseVisualStyleBackColor = true;
@@ -422,18 +435,215 @@
             // 
             this.textBox4.Location = new System.Drawing.Point(16, 20);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(335, 21);
+            this.textBox4.Size = new System.Drawing.Size(233, 21);
             this.textBox4.TabIndex = 11;
             this.textBox4.Text = "tmp\\";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(227, 47);
+            this.button2.Location = new System.Drawing.Point(16, 76);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(73, 23);
             this.button2.TabIndex = 12;
             this.button2.Text = "选择路径";
             this.button2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label16);
+            this.tabPage3.Controls.Add(this.numericUpDown2);
+            this.tabPage3.Controls.Add(this.label15);
+            this.tabPage3.Controls.Add(this.textBox12);
+            this.tabPage3.Controls.Add(this.label14);
+            this.tabPage3.Controls.Add(this.textBox11);
+            this.tabPage3.Controls.Add(this.label13);
+            this.tabPage3.Controls.Add(this.textBox5);
+            this.tabPage3.Controls.Add(this.label12);
+            this.tabPage3.Controls.Add(this.comboBox4);
+            this.tabPage3.Controls.Add(this.label11);
+            this.tabPage3.Controls.Add(this.comboBox2);
+            this.tabPage3.Controls.Add(this.button6);
+            this.tabPage3.Controls.Add(this.button5);
+            this.tabPage3.Controls.Add(this.label9);
+            this.tabPage3.Controls.Add(this.textBox9);
+            this.tabPage3.Controls.Add(this.label10);
+            this.tabPage3.Controls.Add(this.textBox10);
+            this.tabPage3.Controls.Add(this.listView2);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(659, 434);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "举报";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(16, 88);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(41, 12);
+            this.label15.TabIndex = 75;
+            this.label15.Text = "文章id";
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(63, 85);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(159, 21);
+            this.textBox12.TabIndex = 74;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(16, 63);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(41, 12);
+            this.label14.TabIndex = 73;
+            this.label14.Text = "答案id";
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(63, 60);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(159, 21);
+            this.textBox11.TabIndex = 72;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(16, 39);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 12);
+            this.label13.TabIndex = 71;
+            this.label13.Text = "问题id";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(63, 36);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(159, 21);
+            this.textBox5.TabIndex = 70;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(16, 165);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(29, 12);
+            this.label12.TabIndex = 69;
+            this.label12.Text = "类型";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "问题",
+            "答案",
+            "回复",
+            "文章"});
+            this.comboBox4.Location = new System.Drawing.Point(63, 162);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(159, 20);
+            this.comboBox4.TabIndex = 68;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(16, 261);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 67;
+            this.label11.Text = "举报理由";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "不友善",
+            "广告",
+            "政治敏感",
+            "只满足个人需",
+            "算命",
+            "求医问药"});
+            this.comboBox2.Location = new System.Drawing.Point(86, 258);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(136, 20);
+            this.comboBox2.TabIndex = 66;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(18, 284);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(204, 23);
+            this.button6.TabIndex = 65;
+            this.button6.Text = "举报列表中内容";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(18, 212);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(204, 23);
+            this.button5.TabIndex = 64;
+            this.button5.Text = "检索";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(16, 15);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 12);
+            this.label9.TabIndex = 63;
+            this.label9.Text = "话题id";
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(63, 12);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(159, 21);
+            this.textBox9.TabIndex = 62;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(16, 115);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(41, 12);
+            this.label10.TabIndex = 61;
+            this.label10.Text = "关键词";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(63, 112);
+            this.textBox10.Multiline = true;
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(159, 44);
+            this.textBox10.TabIndex = 60;
+            // 
+            // listView2
+            // 
+            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4});
+            this.listView2.FullRowSelect = true;
+            this.listView2.Location = new System.Drawing.Point(240, 12);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(406, 415);
+            this.listView2.TabIndex = 58;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "id";
+            this.columnHeader3.Width = 50;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "content";
+            this.columnHeader4.Width = 256;
             // 
             // splitContainer2
             // 
@@ -584,6 +794,37 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(75, 185);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(147, 21);
+            this.numericUpDown2.TabIndex = 76;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(16, 187);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 12);
+            this.label16.TabIndex = 77;
+            this.label16.Text = "检索个数";
+            // 
             // WSForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -614,6 +855,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -623,6 +866,7 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -674,6 +918,27 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
     }
 }

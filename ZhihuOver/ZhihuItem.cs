@@ -13,13 +13,17 @@ namespace ZhihuOver
     public class ZhihuItem
     {
         public string id;
+        public string title;
         public string content;
+        public string author;
         public getType type;
 
-        public ZhihuItem(string mid, string mcontent, getType mtype)
+        public ZhihuItem(string mid, string mtitle, string mcontent,string mauthor, getType mtype)
         {
             id = mid;
+            title = mtitle;
             content = mcontent;
+            author = mauthor;
             type = mtype;
         }
     }
